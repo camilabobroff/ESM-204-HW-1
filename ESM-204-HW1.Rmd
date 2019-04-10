@@ -12,18 +12,24 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, load libraries}
 
 library(tidyverse)
+library(janitor)
 
 ```
 
 ```{r, load data}
 
-data <- read_csv("HW1 Data.csv")
+data <- read_csv("HW1 Data.csv") %>% 
+  clean_names()
 
 ```
 
 ```{r, part b}
 
-a = (1/()^0.6)
+a_shark <- 1/(sum(data$shark_suitability)^0.6)
+# alpha for sharks = 0.0178
+
+a_tuna <- 1/(sum(data$tuna_suitability)^0.6)
+# alpha for tuna = 0.016
 
 ```
 
