@@ -9,3 +9,25 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r, load libraries}
+
+library(tidyverse)
+
+```
+
+```{r, load data}
+
+data <- read_csv("HW1 Data.csv")
+
+```
+
+```{r, part b}
+
+a = (1/()^0.6)
+
+```
+
+
+
+
+
