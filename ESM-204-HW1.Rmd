@@ -33,6 +33,13 @@ a_tuna <- 1/(sum(data$tuna_suitability)^0.6)
 
 ```
 
+```{r}
+
+data_cost_suit <- data %>% 
+  mutate(suit_cost_shark = shark_suitability/cost_of_pixel) %>% 
+  mutate(suit_cost_tuna = tuna_suitability/cost_of_pixel)
+
+```
 
 
 
