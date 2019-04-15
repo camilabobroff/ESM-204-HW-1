@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(janitor)
+library(kableExtra)
 
 ```
 
@@ -33,14 +34,58 @@ a_tuna <- 1/(sum(data$tuna_suitability)^0.6)
 
 ```
 
-```{r}
+```{r, suitability by cost}
 
 data_cost_suit <- data %>% 
   mutate(suit_cost_shark = shark_suitability/cost_of_pixel) %>% 
   mutate(suit_cost_tuna = tuna_suitability/cost_of_pixel)
 
+table_1 <- data %>% 
+  mutate(suit_cost_shark = shark_suitability/cost_of_pixel) %>% 
+  select(-tuna_suitability) %>% 
+  mutate(sum_cost = cumsum(cost_of_pixel)) %>% 
+  filter(sum_cost < 200) %>% 
+  kable(col.names = c("Parcel", "Cost of Parcel", "Shark Suitability", "Shark Suitability/Cost", "Cumulative Cost")) %>% 
+  kable_styling(bootstrap_options = c("striped"))
+  
+table_1
+
 ```
 
+**Table 1. Shark Suitability Preliminary Analysis.**
+Shark suitability per cost of each parcel calculated. Parcels arranged from most suitable for sharks by cost (within the $200 million budget).
 
+
+```{r, part d) random samples}
+
+# assume each reserve uses 100% of pixels
+
+prob <- data.frame()
+for (i in 1:10) {
+  x <- data.frame
+  x <- data_cost_suit[sample(nrow(data_cost_suit)), ] %>% 
+    mutate(sum_cost = cumsum(cost_of_pixel)) %>% 
+    filter(sum_cost < 200)
+  
+  prob[i,1] <- a_shark*(sum(x$suit_cost_shark)^0.6)
+  prob[i,2] <- a_tuna*(sum(x$suit_cost_tuna)^0.6)
+}
+
+names(prob) = c("Shark", "Tuna")
+
+prob_graph <- ggplot(prob, (aes(x = Shark, y = Tuna))) +
+  geom_point() +
+  theme_classic() +
+  scale_y_continuous(expand = c(0,0), limits = c(0.025,.15)) +
+  scale_x_continuous(expand = c(0,0), limits = c(0.025,.15)) +
+  labs(x = "Shark Survival Probability", y = "Tuna Survival Probability") +
+  theme(text = element_text(family = "Times New Roman"))
+
+prob_graph
+
+# now graph it
+```
+**Figure 1. Probability of Survival for Shark and Tuna.**
+The probability of survival for each species in ten randomly selected reserve networks under $200 million.
 
 
